@@ -13,7 +13,7 @@ def inference(audio):
     with NamedTemporaryFile(suffix=".mp3") as temp:
         with open(f"{temp.name}", "wb") as f:
             f.write(audio.tobytes())
-        result = w.transcribe(f"{temp.name}", lang="es")
+        result = w.transcribe(f"{temp.name}", lang="it")
         text = w.extract_text(result)
     return text[0]
 
@@ -60,7 +60,8 @@ if (prompt := st.chat_input("Your message")) or len(audio):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-        tts = gTTS(response, lang='es', tld="cl")
+        #tts = gTTS(response, lang='es', tld="cl")
+        tts = gTTS(response, lang='it')
         with NamedTemporaryFile(suffix=".mp3") as temp:
             tempname = temp.name
             tts.save(tempname)

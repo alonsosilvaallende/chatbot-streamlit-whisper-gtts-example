@@ -56,11 +56,11 @@ if (prompt := st.chat_input("Your message")) or len(audio):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    response = f"Echo: {prompt}"
+    response = f"{prompt}"
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-        tts = gTTS(response, lang='en')
+        tts = gTTS(response, lang='es', tld="cl")
         with NamedTemporaryFile(suffix=".mp3") as temp:
             tempname = temp.name
             tts.save(tempname)

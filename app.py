@@ -13,7 +13,7 @@ def inference(audio):
     with NamedTemporaryFile(suffix=".mp3") as temp:
         with open(f"{temp.name}", "wb") as f:
             f.write(audio.tobytes())
-        result = w.transcribe(f"{temp.name}")
+        result = w.transcribe(f"{temp.name}", lang="es")
         text = w.extract_text(result)
     return text[0]
 

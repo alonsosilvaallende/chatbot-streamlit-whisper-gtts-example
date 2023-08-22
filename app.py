@@ -6,7 +6,7 @@ from whispercpp import Whisper
 from gtts import gTTS
 
 # Download whisper.cpp
-w = Whisper('tiny')
+w = Whisper('base')
 
 def inference(audio):
     # Save audio to a file:

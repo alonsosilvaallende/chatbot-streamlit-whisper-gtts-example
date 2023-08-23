@@ -1,6 +1,6 @@
 # Speech-to-Speech ChatBot Example
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://chatbot-speech-to-speech-example.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://echobot-whisper-gtts.streamlit.app/)
 
 Example of a ChatBot able to receive either a voice message or a text message as a prompt and reply with a text message and a voice message.
 

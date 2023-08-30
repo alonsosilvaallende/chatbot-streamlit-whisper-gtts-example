@@ -8,8 +8,8 @@ import whisper
 
 
 to_language_code_dict = whisper.tokenizer.TO_LANGUAGE_CODE
-language_list = list(to_language_code_dict.keys())
 to_language_code_dict["automatic"] = "auto"
+language_list = list(to_language_code_dict.keys())
 language_list = sorted(language_list)
 language_list = [language.capitalize() for language in language_list if language != "automatic"]
 language_list = ["Automatic"] + language_list

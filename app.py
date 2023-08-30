@@ -8,10 +8,12 @@ import whisper
 
 
 to_language_code_dict = whisper.tokenizer.TO_LANGUAGE_CODE
-to_language_code_dict["automatic"] = "auto"
 language_list = list(to_language_code_dict.keys())
-language_list = language_list.sort()
-language_list = [language.capitalize() for language in language_list]
+to_language_code_dict["automatic"] = "auto"
+language_list = sorted(language_list)
+language_list = [language.capitalize() for language in language_list if language != "automatic"]
+language_list = ["Automatic"] + language_list
+#language_list = "Automatic"
 # Download whisper.cpp
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
@@ -46,7 +48,7 @@ def autoplay_audio(file_path: str):
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
     st.title("Echo Bot with Whisper")
-    language = st.selectbox('Language', language_list)
+    language = st.selectbox('Language', language_list, index=23)
     lang = to_language_code_dict[language.lower()]
     voice = st.toggle('Voice')
 

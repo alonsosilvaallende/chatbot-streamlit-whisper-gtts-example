@@ -8,7 +8,9 @@ import whisper
 
 
 to_language_code_dict = whisper.tokenizer.TO_LANGUAGE_CODE
+to_language_code_dict["automatic"] = "auto"
 language_list = list(to_language_code_dict.keys())
+language_list = language_list.sort()
 language_list = [language.capitalize() for language in language_list]
 # Download whisper.cpp
 @st.cache_resource  # 👈 Add the caching decorator

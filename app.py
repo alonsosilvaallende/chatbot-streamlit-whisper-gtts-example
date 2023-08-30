@@ -11,7 +11,11 @@ to_language_code_dict = whisper.tokenizer.TO_LANGUAGE_CODE
 language_list = list(to_language_code_dict.keys())
 language_list = [language.capitalize() for language in language_list]
 # Download whisper.cpp
-w = Whisper('base')
+@st.cache_resource  # 👈 Add the caching decorator
+def load_model():
+    return Whisper('base')
+
+w = load_model()
 
 def inference(audio, lang):
     # Save audio to a file:

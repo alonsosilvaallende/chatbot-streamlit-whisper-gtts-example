@@ -4,16 +4,21 @@ from tempfile import NamedTemporaryFile
 from audiorecorder import audiorecorder
 from whispercpp import Whisper
 from gtts import gTTS
+import whisper
 
+
+to_language_code_dict = whisper.tokenizer.TO_LANGUAGE_CODE
+language_list = list(to_language_code_dict.keys())
+language_list = [language.capitalize() for language in language_list]
 # Download whisper.cpp
 w = Whisper('base')
 
-def inference(audio):
+def inference(audio, lang):
     # Save audio to a file:
     with NamedTemporaryFile(suffix=".mp3") as temp:
         with open(f"{temp.name}", "wb") as f:
             f.write(audio.tobytes())
-        result = w.transcribe(f"{temp.name}", lang="es")
+        result = w.transcribe(f"{temp.name}", lang=lang)
         text = w.extract_text(result)
     return text[0]
 
@@ -35,6 +40,9 @@ def autoplay_audio(file_path: str):
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
     st.title("Echo Bot with Whisper")
+    language = st.selectbox('Language', language_list)
+    lang = to_language_code_dict[language.lower()]
+    voice = st.toggle('Voice')
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -49,7 +57,7 @@ for message in st.session_state.messages:
 if (prompt := st.chat_input("Your message")) or len(audio):
     # If it's coming from the audio recorder transcribe the message with whisper.cpp
     if len(audio)>0:
-        prompt = inference(audio)
+        prompt = inference(audio, lang)
 
     # Display user message in chat message container
     st.chat_message("user").markdown(prompt)
@@ -60,12 +68,16 @@ if (prompt := st.chat_input("Your message")) or len(audio):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-        tts = gTTS(response, lang='es', tld="cl")
-        #tts = gTTS(response, lang='it')
-        with NamedTemporaryFile(suffix=".mp3") as temp:
-            tempname = temp.name
-            tts.save(tempname)
-            autoplay_audio(tempname)
+        if voice:
+            if lang == 'es':
+                tts = gTTS(response, lang='es', tld="cl")
+            else:
+                tts = gTTS(response, lang=lang)
+            #tts = gTTS(response, lang='it')
+            with NamedTemporaryFile(suffix=".mp3") as temp:
+                tempname = temp.name
+                tts.save(tempname)
+                autoplay_audio(tempname)
 
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})

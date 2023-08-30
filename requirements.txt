@@ -1,4 +1,5 @@
 streamlit
 streamlit-audiorecorder
 git+https://github.com/johnryan465/whispercpp.py
+git+https://github.com/openai/whisper.git
 gTTS

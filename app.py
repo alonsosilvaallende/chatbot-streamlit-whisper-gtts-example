@@ -16,16 +16,21 @@ language_list = ["Automatic"] + language_list
 #language_list = "Automatic"
 # Download whisper.cpp
 @st.cache_resource  # 👈 Add the caching decorator
-def load_model():
-    return Whisper('base')
+def load_model(precision):
+    if precision == "whisper-tiny":
+        model = Whisper('tiny')
+    elif precision == "whisper-base":
+        model = Whisper('base')
+    else:
+        model = Whisper('small')
+    return model
 
-w = load_model()
 
 def inference(audio, lang):
     # Save audio to a file:
     with NamedTemporaryFile(suffix=".mp3") as temp:
         with open(f"{temp.name}", "wb") as f:
-            f.write(audio.tobytes())
+            f.write(audio.export().read())
         result = w.transcribe(f"{temp.name}", lang=lang)
         text = w.extract_text(result)
     return text[0]
@@ -50,6 +55,8 @@ with st.sidebar:
     st.title("Echo Bot with Whisper")
     language = st.selectbox('Language', language_list, index=23)
     lang = to_language_code_dict[language.lower()]
+    precision = st.selectbox("Precision", ["whisper-tiny", "whisper-base", "whisper-small"])
+    w = load_model(precision)
     voice = st.toggle('Voice')
 
 # Initialize chat history

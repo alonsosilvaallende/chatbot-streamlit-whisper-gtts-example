@@ -57,7 +57,7 @@ with st.sidebar:
     lang = to_language_code_dict[language.lower()]
     precision = st.selectbox("Precision", ["whisper-tiny", "whisper-base", "whisper-small"])
     w = load_model(precision)
-    voice = st.toggle('Voice')
+    voice = st.toggle('Voice', value=True)
 
 # Initialize chat history
 if "messages" not in st.session_state:
